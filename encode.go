@@ -5,8 +5,8 @@ import (
 	"fmt"
 )
 
-// PercentEncode percent encodes a string according to RFC 3986 2.1.
-func PercentEncode(input string) string {
+// The percentEncode percent encodes a string according to RFC 3986 2.1.
+func percentEncode(input string) string {
 	var buf bytes.Buffer
 	for _, b := range []byte(input) {
 		if shouldEscape(b) {

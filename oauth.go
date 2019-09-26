@@ -53,7 +53,7 @@ func GetAuthorizationHeader(u *url.URL, method string, payload []byte, consumerK
 	if err != nil {
 		return "", err
 	}
-	oauthParams[oauthSignatureParam] = PercentEncode(signature)
+	oauthParams[oauthSignatureParam] = percentEncode(signature)
 
 	return getAuthorizationString(oauthParams), nil
 }
@@ -74,12 +74,12 @@ func extractQueryParams(u *url.URL) map[string][]string {
 			// inserted. Hence, remove the record
 			// of original key
 			queryParams.Del(k)
-			k = PercentEncode(k)
+			k = percentEncode(k)
 		}
 		// encode value(s)
 		for i, each := range v {
 			if mustEncode {
-				v[i] = PercentEncode(each)
+				v[i] = percentEncode(each)
 			} else {
 				v[i] = each
 			}
@@ -197,9 +197,9 @@ func getSignatureBaseString(method, baseUrl, paramString string) string {
 		// upper-case http method
 		strings.ToUpper(method),
 		// encoded base url
-		PercentEncode(baseUrl),
+		percentEncode(baseUrl),
 		// encoded parameter string
-		PercentEncode(paramString),
+		percentEncode(paramString),
 	}
 	return strings.Join(baseParts, "&")
 }

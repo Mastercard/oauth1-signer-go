@@ -298,17 +298,17 @@ func TestGetSignatureBaseString_Integrated(t *testing.T) {
 }
 
 func TestPercentEncode(t *testing.T) {
-	if "Format%3DXML" != PercentEncode("Format=XML") {
-		t.Errorf("Something went wrong got, %v", PercentEncode("Format=XML"))
+	if "Format%3DXML" != percentEncode("Format=XML") {
+		t.Errorf("Something went wrong got, %v", percentEncode("Format=XML"))
 	}
-	if "WhqqH%2BTU95VgZMItpdq78BWb4cE%3D" != PercentEncode("WhqqH+TU95VgZMItpdq78BWb4cE=") {
-		t.Errorf("Something went wrong got, %v", PercentEncode("WhqqH+TU95VgZMItpdq78BWb4cE="))
+	if "WhqqH%2BTU95VgZMItpdq78BWb4cE%3D" != percentEncode("WhqqH+TU95VgZMItpdq78BWb4cE=") {
+		t.Errorf("Something went wrong got, %v", percentEncode("WhqqH+TU95VgZMItpdq78BWb4cE="))
 	}
-	if "WhqqH%2BTU95VgZMItpdq78BWb4cE%3D%26o" != PercentEncode("WhqqH+TU95VgZMItpdq78BWb4cE=&o") {
-		t.Errorf("Something went wrong got, %v", PercentEncode("WhqqH+TU95VgZMItpdq78BWb4cE=&o"))
+	if "WhqqH%2BTU95VgZMItpdq78BWb4cE%3D%26o" != percentEncode("WhqqH+TU95VgZMItpdq78BWb4cE=&o") {
+		t.Errorf("Something went wrong got, %v", percentEncode("WhqqH+TU95VgZMItpdq78BWb4cE=&o"))
 	}
-	if "WhqqH%2BTU95VgZ~Itpdq78BWb4cE%3D%26o" != PercentEncode("WhqqH+TU95VgZ~Itpdq78BWb4cE=&o") { // Tilde stays unescaped
-		t.Errorf("Something went wrong got, %v", PercentEncode("WhqqH+TU95VgZ~Itpdq78BWb4cE=&o"))
+	if "WhqqH%2BTU95VgZ~Itpdq78BWb4cE%3D%26o" != percentEncode("WhqqH+TU95VgZ~Itpdq78BWb4cE=&o") { // Tilde stays unescaped
+		t.Errorf("Something went wrong got, %v", percentEncode("WhqqH+TU95VgZ~Itpdq78BWb4cE=&o"))
 	}
 }
 
