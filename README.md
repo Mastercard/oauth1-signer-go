@@ -1,5 +1,8 @@
 # oauth1-signer-go
 
+[![](https://img.shields.io/badge/godoc-reference-5272B4.svg)](https://godoc.org/github.com/Mastercard/oauth1-signer-go)
+[![](https://img.shields.io/badge/license-MIT-yellow.svg)](https://github.com/Mastercard/oauth1-signer-go/blob/master/LICENSE)
+
 ## Table of Contents
 - [Overview](#overview)
   * [Compatibility](#compatibility)
