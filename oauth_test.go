@@ -2,7 +2,7 @@ package oauth
 
 import (
 	"crypto/rsa"
-	"github.com/mastercard/oauth1-signer-go/authentication_utils"
+	"github.com/mastercard/oauth1-signer-go/utils"
 	"net/url"
 	"reflect"
 	"testing"
@@ -289,7 +289,7 @@ func TestSignSignatureBaseString(t *testing.T) {
 }
 
 func getTestSigningKey() *rsa.PrivateKey {
-	signingKey, _ := authentication_utils.LoadSigningKey("testdata/test_key_container.p12", "Password1")
+	signingKey, _ := utils.LoadSigningKey("testdata/test_key_container.p12", "Password1")
 	return signingKey
 }
 

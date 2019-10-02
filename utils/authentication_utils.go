@@ -1,5 +1,5 @@
-// Package authentication_utils handles loading of signing key.
-package authentication_utils
+// Package utils handles loading of signing key.
+package utils
 
 import (
 	"crypto/rsa"

@@ -4,7 +4,7 @@ package interceptor
 
 import (
 	"github.com/mastercard/oauth1-signer-go"
-	"github.com/mastercard/oauth1-signer-go/authentication_utils"
+	"github.com/mastercard/oauth1-signer-go/utils"
 	"net/http"
 )
 
@@ -33,7 +33,7 @@ func (h *httpClientInterceptor) RoundTrip(req *http.Request) (*http.Response, er
 // filePath: a file path of a RSA private key in PKCS#12 format
 // password: a password to read the RSA private key from the given file path
 func GetHttpClient(consumerKey, filePath, password string) (*http.Client, error) {
-	signingKey, e := authentication_utils.LoadSigningKey(filePath, password)
+	signingKey, e := utils.LoadSigningKey(filePath, password)
 	if e != nil {
 		return nil, e
 	}

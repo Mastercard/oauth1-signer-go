@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	oauth "github.com/mastercard/oauth1-signer-go"
-	"github.com/mastercard/oauth1-signer-go/authentication_utils"
+	"github.com/mastercard/oauth1-signer-go/utils"
 	"net/http"
 	"testing"
 )
@@ -14,7 +14,7 @@ const (
 )
 
 var (
-	signingKey, _ = authentication_utils.LoadSigningKey("testdata/test_key_container.p12", "Password1")
+	signingKey, _ = utils.LoadSigningKey("testdata/test_key_container.p12", "Password1")
 	jsonData      = map[string]string{"foo": "bår"}
 	jsonValue, _  = json.Marshal(jsonData)
 	request, _    = http.NewRequest("POST", "https://sandbox.api.mastercard.com/service", bytes.NewBuffer(jsonValue))

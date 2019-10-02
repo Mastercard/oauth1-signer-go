@@ -1,8 +1,8 @@
 package crypto_test
 
 import (
-	"github.com/mastercard/oauth1-signer-go/authentication_utils"
 	"github.com/mastercard/oauth1-signer-go/crypto"
+	"github.com/mastercard/oauth1-signer-go/utils"
 	"testing"
 )
 
@@ -22,7 +22,7 @@ func TestSHA256Hash(t *testing.T) {
 
 func TestRSASignature(t *testing.T) {
 
-	privateKey, _ := authentication_utils.LoadSigningKey("../testdata/test_key_container.p12", "Password1")
+	privateKey, _ := utils.LoadSigningKey("../testdata/test_key_container.p12", "Password1")
 	var signingData [10]byte
 	sign, err := crypto.Sign(signingData[:], privateKey)
 
