@@ -1,6 +1,6 @@
 # oauth1-signer-go
 
-![](https://img.shields.io/github/v/tag/Mastercard/oauth1-signer-go)
+[![](https://goreportcard.com/badge/github.com/Mastercard/oauth1-signer-go)](https://goreportcard.com/report/github.com/Mastercard/oauth1-signer-go)
 [![](https://img.shields.io/badge/godoc-reference-5272B4.svg)](https://godoc.org/github.com/Mastercard/oauth1-signer-go)
 [![](https://img.shields.io/badge/license-MIT-yellow.svg)](https://github.com/Mastercard/oauth1-signer-go/blob/master/LICENSE)
 

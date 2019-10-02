@@ -44,5 +44,9 @@ func getRequestBody(req *http.Request) ([]byte, error) {
 	if req.Body == nil {
 		return nil, nil
 	}
-	return ioutil.ReadAll(req.Body)
+	getBody, e := req.GetBody()
+	if e != nil {
+		return nil, e
+	}
+	return ioutil.ReadAll(getBody)
 }

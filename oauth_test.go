@@ -69,7 +69,7 @@ func TestExtractQueryParams_ShouldEncodeParams_WhenUrlCreatedFromStringWithEncod
 
 	// THEN
 	if l := len(queryParams); l != 3 {
-		t.Errorf("Expected len of queryParams is 4, got %v", l)
+		t.Errorf("Expected len of queryParams is 3, got %v", l)
 	}
 	if "colon=%3A&plus=%2B&comma=%2C" != u.RawQuery {
 		t.Errorf("Something went wrong, got %v", u.RawQuery)
@@ -79,13 +79,41 @@ func TestExtractQueryParams_ShouldEncodeParams_WhenUrlCreatedFromStringWithEncod
 		t.Errorf("Something went wrong, got %v", decoded)
 	}
 	if v := queryParams["colon"]; !reflect.DeepEqual(v, []string{"%3A"}) {
-		t.Errorf("Expected queryParams[\"colon\"] [], got %v", v)
+		t.Errorf("Expected queryParams[\"colon\"], got %v", v)
 	}
 	if v := queryParams["plus"]; !reflect.DeepEqual(v, []string{"%2B"}) {
-		t.Errorf("Expected queryParams[\"plus\"] [], got %v", v)
+		t.Errorf("Expected queryParams[\"plus\"], got %v", v)
 	}
 	if v := queryParams["comma"]; !reflect.DeepEqual(v, []string{"%2C"}) {
-		t.Errorf("Expected queryParams[\"comma\"] [], got %v", v)
+		t.Errorf("Expected queryParams[\"comma\"], got %v", v)
+	}
+}
+
+func TestExtractQueryParams_ShouldEncodeParams_WhenUrlCreatedFromStringWithDecodedParams(t *testing.T) {
+	// GIVEN
+	u, _ := url.Parse("https://example.com/request?colon=:&plus=+&comma=,")
+
+	//WHEN
+	queryParams := extractQueryParams(u)
+
+	//THEN
+	if l := len(queryParams); l != 3 {
+		t.Errorf("Expected len of queryParams is 3, got %v", l)
+	}
+	if v := u.RawQuery; v != "colon=:&plus=+&comma=," {
+		t.Errorf("Something went wrong with rawQuery, got %v", v)
+	}
+	if v, _ := url.PathUnescape(u.RawQuery); v != "colon=:&plus=+&comma=," {
+		t.Errorf("Something went wrong with decodedQuery, got %v", v)
+	}
+	if v := queryParams["colon"]; !reflect.DeepEqual(v, []string{":"}) {
+		t.Errorf("Expected queryParams[\"colon\"] [:], got %v", v)
+	}
+	if v := queryParams["plus"]; !reflect.DeepEqual(v, []string{" "}) {
+		t.Errorf("Expected queryParams[\"plus\"] [], got %v", v)
+	}
+	if v := queryParams["comma"]; !reflect.DeepEqual(v, []string{","}) {
+		t.Errorf("Expected queryParams[\"comma\"] [,], got %v", v)
 	}
 }
 

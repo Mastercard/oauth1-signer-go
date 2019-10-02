@@ -17,6 +17,8 @@ import (
 )
 
 const (
+	// AuthorizationHeaderName constant is the header key name for the
+	// oauth1.0a based authorization header
 	AuthorizationHeaderName   = "Authorization"
 	nonceLength               = 16
 	alphaNumericChars         = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -62,7 +64,10 @@ func GetAuthorizationHeader(u *url.URL, method string, payload []byte, consumerK
 func extractQueryParams(u *url.URL) map[string][]string {
 	queryParams := u.Query()
 	rawQuery := u.RawQuery
-	decodedQuery, _ := url.QueryUnescape(rawQuery)
+	// url.QueryUnescape unescape '+' to ' ' (space) which impacts
+	// the logic whether to perform percent encode or not. Hence,
+	// url.PathUnescape is used to get the decoded query string.
+	decodedQuery, _ := url.PathUnescape(rawQuery)
 
 	// whether to perform percent encode or not
 	mustEncode := decodedQuery != rawQuery
