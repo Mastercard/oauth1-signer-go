@@ -43,12 +43,12 @@ import github.com/mastercard/oauth1-signer-go
 
 ### Loading the Signing Key <a name="loading-the-signing-key"></a>
 
-A `signingKey` can be created by calling the `authenticationUtils.LoadSigningKey` function:
+A `signingKey` can be created by calling the `utils.LoadSigningKey` function:
 ```
-import "github.com/mastercard/oauth1-signer-go/authentication_utils"
+import "github.com/mastercard/oauth1-signer-go/utils"
 
 //...
-signingKey, err := authenticationUtils.LoadSigningKey(
+signingKey, err := utils.LoadSigningKey(
                                     "<insert PKCS#12 key file path>", 
                                     "<insert key password>")
 //...
