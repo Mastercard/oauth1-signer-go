@@ -32,6 +32,7 @@ const (
 	oauthBodyHashParam        = "oauth_body_hash"
 	defaultOauthVersion       = "1.0"
 	sha256HashingAlgorithm    = "SHA256"
+	sha1HashingAlgorithm    = "SHA1"
 )
 
 // GetAuthorizationHeader creates a Mastercard API compliant OAuth Authorization header.
@@ -52,6 +53,32 @@ func GetAuthorizationHeader(u *url.URL, method string, payload []byte, consumerK
 
 	// signature
 	signature, err := signSignatureBaseString(sbs, signingKey)
+	if err != nil {
+		return "", err
+	}
+	oauthParams[oauthSignatureParam] = percentEncode(signature)
+
+	return getAuthorizationString(oauthParams), nil
+}
+
+// GetAuthorizationHeader creates a Masterpass API compliant OAuth Authorization header.
+func GetAuthorizationMasterpassHeader(u *url.URL, method string, payload []byte, consumerKey string, signingKey *rsa.PrivateKey) (string, error) {
+	queryParams := extractQueryParams(u)
+
+	// get all required oauth params
+	oauthParams := getOAuthMasterpassParams(consumerKey, payload)
+
+	// combine query and oauth parameters into lexicographically sorted string
+	paramString := toOauthParamString(queryParams, oauthParams)
+
+	// normalized URL without query params and fragment
+	baseUrl := getBaseUrlString(u)
+
+	// signature base string
+	sbs := getSignatureBaseString(method, baseUrl, paramString)
+
+	// signature
+	signature, err := signSignatureMasterpassBaseString(sbs, signingKey)
 	if err != nil {
 		return "", err
 	}
@@ -107,6 +134,19 @@ func getOAuthParams(consumerKey string, payload []byte) map[string]string {
 	return params
 }
 
+// The getOAuthParams returns map of oauth parameters.
+func getOAuthMasterpassParams(consumerKey string, payload []byte) map[string]string {
+	params := map[string]string{
+		oauthConsumerKeyParam:     consumerKey,
+		oauthNonceParam:           getNonce(),
+		oauthSignatureMethodParam: "RSA-" + sha1HashingAlgorithm,
+		oauthTimestampParam:       getTimestamp(),
+		oauthVersionParam:         defaultOauthVersion,
+		oauthBodyHashParam:        percentEncode(getBodyHashMasterpass(payload)),
+	}
+	return params
+}
+
 // The getTimestamp returns UNIX timestamp
 func getTimestamp() string {
 	return strconv.FormatInt(epoch(), 10)
@@ -119,6 +159,12 @@ func epoch() int64 {
 // The getBodyHash generates the hash of request payload
 func getBodyHash(payload []byte) string {
 	hash := crypto.Sha256(payload)
+	return base64.StdEncoding.EncodeToString(hash)
+}
+
+// The getBodyHash generates the hash of request payload
+func getBodyHashMasterpass(payload []byte) string {
+	hash := crypto.Sha1(payload)
 	return base64.StdEncoding.EncodeToString(hash)
 }
 
@@ -213,6 +259,16 @@ func getSignatureBaseString(method, baseUrl, paramString string) string {
 // input string.
 func signSignatureBaseString(sbs string, signingKey *rsa.PrivateKey) (string, error) {
 	signature, err := crypto.Sign([]byte(sbs), signingKey)
+	if err != nil {
+		return "", err
+	}
+	return base64.StdEncoding.EncodeToString(signature), nil
+}
+
+// The signSignatureBaseString performs the RSA signing on the given
+// input string.
+func signSignatureMasterpassBaseString(sbs string, signingKey *rsa.PrivateKey) (string, error) {
+	signature, err := crypto.SignSHA1([]byte(sbs), signingKey)
 	if err != nil {
 		return "", err
 	}
