@@ -39,14 +39,14 @@ As part of this set up, you'll receive credentials for your app:
 ### Installation <a name="installation"></a>
 
 ####
-```
+```go
 import github.com/mastercard/oauth1-signer-go
 ```
 
 ### Loading the Signing Key <a name="loading-the-signing-key"></a>
 
 A `signingKey` can be created by calling the `utils.LoadSigningKey` function:
-```
+```go
 import "github.com/mastercard/oauth1-signer-go/utils"
 
 //...
@@ -59,7 +59,7 @@ signingKey, err := utils.LoadSigningKey(
 ### Creating the OAuth Authorization Header <a name="creating-the-oauth-authorization-header"></a>
 The function that does all the heavy lifting is `OAuth.GetAuthorizationHeader`. You can call into it directly and as long as you provide the correct parameters, it will return a string that you can add into your request's `Authorization` header.
 
-```
+```go
 import "github.com/mastercard/oauth1-signer-go"
 
 //...
@@ -77,7 +77,7 @@ Alternatively, you can use helper function for http request.
 
 Usage briefly described below, but you can also refer to the test package for examples. 
 
-```
+```go
 import "github.com/mastercard/oauth1-signer-go"
 
 //...
@@ -89,7 +89,6 @@ signer := &oauth.Signer{
 }
 err = signer.Sign(request)
 //...
-
 ```
 
 ### Integrating with OpenAPI Generator API Client Libraries <a name="integrating-with-openapi-generator-api-client-libraries"></a>
@@ -107,7 +106,7 @@ Generators currently supported:
 
 Client libraries can be generated using the following command:
 
-```
+```shell
 java -jar openapi-generator-cli.jar generate -i openapi-spec.yaml -g go -o out
 ```
 
@@ -117,7 +116,7 @@ See also:
 
 ##### Usage of the github.com/mastercard/oauth1-signer-go/interceptor
 
-```
+```go
 import "github.com/mastercard/oauth1-signer-go/interceptor"
 
 //...
@@ -129,5 +128,4 @@ apiClient := openapi.NewAPIClient(configuration)
 
 response, err = apiClient.SomeApi.doSomething()
 //...
-
 ```
