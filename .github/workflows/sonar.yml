@@ -1,0 +1,39 @@
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+name: Sonar
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup go
+        uses: actions/setup-go@v1
+        with:
+          go-version: '1.15'
+      - name: Build with npm
+        run: | 
+          go build -v .
+          go test -v -coverprofile cover.out
+      - name: SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=mastercard
+            -Dsonar.projectKey=Mastercard_oauth1-signer-go
+            -Dsonar.projectName=oauth1-signer-go
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.go.coverage.reportPaths=./cover.out
+            -Dsonar.exclusions=**/*_test.go,**/vendor/**,**/testdata/*
+            -Dsonar.test.inclusions=**/*_test.go
+            -Dsonar.test.exclusions=**/vendor/**
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
