@@ -1,6 +1,7 @@
 # oauth1-signer-go
 
 [![](https://goreportcard.com/badge/github.com/Mastercard/oauth1-signer-go)](https://goreportcard.com/report/github.com/Mastercard/oauth1-signer-go)
+[![](https://sonarcloud.io/api/project_badges/measure?project=Mastercard_oauth1-signer-go&metric=alert_status)](https://sonarcloud.io/dashboard?id=Mastercard_oauth1-signer-go)
 [![](https://github.com/Mastercard/oauth1-signer-go/workflows/broken%20links%3F/badge.svg)](https://github.com/Mastercard/oauth1-signer-go/actions?query=workflow%3A%22broken+links%3F%22)
 [![](https://img.shields.io/badge/godoc-reference-5272B4.svg)](https://godoc.org/github.com/Mastercard/oauth1-signer-go)
 [![](https://img.shields.io/badge/license-MIT-yellow.svg)](https://github.com/Mastercard/oauth1-signer-go/blob/master/LICENSE)
