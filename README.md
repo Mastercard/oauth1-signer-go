@@ -1,4 +1,5 @@
 # oauth1-signer-go
+<img src="https://developer.mastercard.com/img/logo_cogs.svg" />
 
 [![](https://github.com/Mastercard/oauth1-signer-go/workflows/Build%20&%20Test/badge.svg)](https://github.com/Mastercard/oauth1-signer-go/actions?query=workflow%3A%22Build+%26+Test%22)
 [![](https://goreportcard.com/badge/github.com/Mastercard/oauth1-signer-go)](https://goreportcard.com/report/github.com/Mastercard/oauth1-signer-go)
