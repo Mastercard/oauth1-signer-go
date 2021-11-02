@@ -2,7 +2,7 @@
   push:
     branches:
       - main
-  pull_request:
+  pull_request_target:
     branches:
       - main
   schedule:
@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Check for external PR
+        if: ${{ !(contains(github.event.pull_request.labels.*.name, 'safe') ||
+          github.event.pull_request.head.repo.full_name == github.repository ||
+          github.event_name != 'pull_request_target') }}
+        run: echo "Unsecure PR, must be labelled with the 'safe' label, then run the workflow again" && exit 1
       - name: Setup go
         uses: actions/setup-go@v1
         with:
