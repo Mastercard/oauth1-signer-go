@@ -5,6 +5,7 @@
   pull_request_target:
     branches:
       - main
+    types: [opened, synchronize, reopened, labeled]
   schedule:
     - cron: 0 16 * * *
 name: Sonar
