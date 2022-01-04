@@ -51,11 +51,11 @@ A `signingKey` can be created by calling the `utils.LoadSigningKey` function:
 ```go
 import "github.com/mastercard/oauth1-signer-go/utils"
 
-//...
+//…
 signingKey, err := utils.LoadSigningKey(
                                     "<insert PKCS#12 key file path>", 
                                     "<insert key password>")
-//...
+//…
 ```
 
 ### Creating the OAuth Authorization Header <a name="creating-the-oauth-authorization-header"></a>
@@ -64,13 +64,13 @@ The function that does all the heavy lifting is `OAuth.GetAuthorizationHeader`. 
 ```go
 import "github.com/mastercard/oauth1-signer-go"
 
-//...
+//…
 consumerKey := "<insert consumer key>"
 url, _ := url.Parse("https://sandbox.api.mastercard.com/service")
 method := "POST"
 payload := "<insert payload>"
 authHeader, err := oauth.GetAuthorizationHeader(url, method, payload, consumerKey, signingKey)
-//...
+//…
 ```
 
 ### Signing HTTP Request <a name="signing-http-request"></a>
@@ -82,7 +82,7 @@ Usage briefly described below, but you can also refer to the test package for ex
 ```go
 import "github.com/mastercard/oauth1-signer-go"
 
-//...
+//…
 payload := "<insert payload>"
 request, _ := http.NewRequest("POST", "https://sandbox.api.mastercard.com/service", payload)
 signer := &oauth.Signer{
@@ -90,7 +90,7 @@ signer := &oauth.Signer{
     SigningKey:  signingKey,
 }
 err = signer.Sign(request)
-//...
+//…
 ```
 
 ### Integrating with OpenAPI Generator API Client Libraries <a name="integrating-with-openapi-generator-api-client-libraries"></a>
@@ -109,11 +109,11 @@ Generators currently supported:
 Client libraries can be generated using the following command:
 
 ```shell
-java -jar openapi-generator-cli.jar generate -i openapi-spec.yaml -g go -o out
+openapi-generator-cli generate -i openapi-spec.yaml -g go -o out
 ```
 
 See also:
-* [OpenAPI Generator (executable)](https://mvnrepository.com/artifact/org.openapitools/openapi-generator-cli)
+* [OpenAPI Generator CLI Installation](https://openapi-generator.tech/docs/installation/)
 * [CONFIG OPTIONS for Go](https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/go.md)
 
 ##### Usage of the github.com/mastercard/oauth1-signer-go/interceptor
@@ -121,7 +121,7 @@ See also:
 ```go
 import "github.com/mastercard/oauth1-signer-go/interceptor"
 
-//...
+//…
 configuration := openapi.NewConfiguration()
 configuration.BasePath = "https://sandbox.api.mastercard.com"
 httpClient, _ := interceptor.GetHttpClient("<insert consumer key>", "<insert PKCS#12 key file path>", "<insert key password>")
@@ -129,5 +129,5 @@ configuration.HTTPClient = httpClient
 apiClient := openapi.NewAPIClient(configuration)
 
 response, err = apiClient.SomeApi.doSomething()
-//...
+//…
 ```
