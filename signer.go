@@ -41,6 +41,9 @@ func (signer *Signer) Sign(req *http.Request) error {
 // The getRequestBody extracts the body content from the given
 // http request and returns in []byte format.
 func getRequestBody(req *http.Request) ([]byte, error) {
+	if req.Body == nil {
+		return nil, nil
+	}
 	bodyBytes, err := io.ReadAll(req.Body)
 	if err != nil {
 		return nil, err
