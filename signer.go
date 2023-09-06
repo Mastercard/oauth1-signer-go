@@ -3,7 +3,7 @@ package oauth
 import (
 	"crypto/rsa"
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -41,14 +41,11 @@ func (signer *Signer) Sign(req *http.Request) error {
 // The getRequestBody extracts the body content from the given
 // http request and returns in []byte format.
 func getRequestBody(req *http.Request) ([]byte, error) {
-	if req.Body == nil {
-		return nil, nil
+	bodyBytes, err := io.ReadAll(req.Body)
+	if err != nil {
+		return nil, err
 	}
-	getBody, e := req.GetBody()
-	if e != nil {
-		return nil, e
-	}
-	defer func() { _ = getBody.Close() }()
+	defer req.Body.Close()
 
-	return ioutil.ReadAll(getBody)
+	return bodyBytes, nil
 }
