@@ -3,7 +3,7 @@ package oauth
 import (
 	"crypto/rsa"
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -44,11 +44,11 @@ func getRequestBody(req *http.Request) ([]byte, error) {
 	if req.Body == nil {
 		return nil, nil
 	}
-	getBody, e := req.GetBody()
-	if e != nil {
-		return nil, e
+	bodyBytes, err := io.ReadAll(req.Body)
+	if err != nil {
+		return nil, err
 	}
-	defer func() { _ = getBody.Close() }()
+	defer req.Body.Close()
 
-	return ioutil.ReadAll(getBody)
+	return bodyBytes, nil
 }
