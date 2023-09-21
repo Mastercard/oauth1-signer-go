@@ -1,6 +1,7 @@
 package oauth
 
 import (
+	"bytes"
 	"crypto/rsa"
 	"errors"
 	"io"
@@ -49,6 +50,7 @@ func getRequestBody(req *http.Request) ([]byte, error) {
 		return nil, err
 	}
 	defer req.Body.Close()
+	req.Body = io.NopCloser(bytes.NewReader(bodyBytes))
 
 	return bodyBytes, nil
 }
