@@ -36,7 +36,7 @@ jobs:
         with:
           args: >
             -Dsonar.organization=mastercard
-            -Dsonar.projectKey=Mastercard_oauth1-signer-go 
+            -Dsonar.projectKey=Mastercard_oauth1-signer-go
             -Dsonar.projectName=oauth1-signer-go
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.go.coverage.reportPaths=./cover.out
