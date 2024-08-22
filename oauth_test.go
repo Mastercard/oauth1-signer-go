@@ -253,6 +253,15 @@ func TestGetBaseUrlString_ShouldAddTrailingSlash(t *testing.T) {
 	}
 }
 
+func TestGetBaseUrlString_ShouldAddLeadingSlashToPath(t *testing.T) {
+	u, _ := url.Parse("https://api.mastercard.com")
+	u.Path = "test/service"
+	baseUrl := getBaseUrlString(u)
+	if "https://api.mastercard.com/test/service" != baseUrl {
+		t.Errorf("Something went wrong, got %v", baseUrl)
+	}
+}
+
 func TestGetBaseUrlString_ShouldUseLowercaseSchemesAndHosts(t *testing.T) {
 	u, _ := url.Parse("HTTPS://API.MASTERCARD.COM/TEST")
 	baseUrl := getBaseUrlString(u)
