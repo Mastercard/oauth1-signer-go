@@ -188,8 +188,8 @@ func getBaseUrlString(u *url.URL) string {
 		host = hostPort[0]
 	}
 	path := u.EscapedPath()
-	if path == "" {
-		path = "/"
+	if path == "" || path[0] != '/' {
+		path = "/" + path
 	}
 	return fmt.Sprintf("%v://%v%v", scheme, host, path)
 }
