@@ -84,10 +84,13 @@ Alternatively, you can use helper function for http request.
 Usage briefly described below, but you can also refer to the test package for examples. 
 
 ```go
-import "github.com/mastercard/oauth1-signer-go"
+import (
+  "strings"
+  "github.com/mastercard/oauth1-signer-go"
+  )
 
 //…
-payload := "<insert payload>"
+payload := strings.NewReader("<insert payload>")
 request, _ := http.NewRequest("POST", "https://sandbox.api.mastercard.com/service", payload)
 signer := &oauth.Signer{
     ConsumerKey: consumerKey,
