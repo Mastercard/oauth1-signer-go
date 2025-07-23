@@ -18,6 +18,8 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.20.x
+      - name: Print Go version
+        run: go version
       - name: Check out
         uses: actions/checkout@v2
       - name: Get dependencies
