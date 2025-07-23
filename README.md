@@ -25,7 +25,7 @@
 Library for Generating a Mastercard API compliant OAuth signature.
 
 ### Compatibility <a name="compatibility"></a>
-* Go 1.20+
+* Go 1.23+
 
 ### References <a name="references"></a>
 * [OAuth 1.0a specification](https://tools.ietf.org/html/rfc5849)
