@@ -1,5 +1,5 @@
 module github.com/mastercard/oauth1-signer-go
 
-go 1.23
+go 1.24.0
 
-require golang.org/x/crypto v0.35.0
+require golang.org/x/crypto v0.45.0
