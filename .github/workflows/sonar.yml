@@ -21,7 +21,7 @@ jobs:
           github.event_name != 'pull_request_target') }}
         run: echo "Unsecure PR, must be labelled with the 'safe' label, then run the workflow again" && exit 1
       - name: Setup go
-        uses: actions/setup-go@v1
+        uses: actions/setup-go@v2
         with:
           go-version: 1.20.x
       - name: Build with npm
