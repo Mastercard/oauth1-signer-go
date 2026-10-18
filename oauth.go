@@ -153,7 +153,7 @@ func toOauthParamString(queryParams map[string][]string, oauthParams map[string]
 	}
 
 	// sort as per the keys
-	keys := make([]string, len(consolidatedParams))
+	keys := make([]string, 0, len(consolidatedParams))
 	for k := range consolidatedParams {
 		keys = append(keys, k)
 	}
@@ -180,13 +180,26 @@ func toOauthParamString(queryParams map[string][]string, oauthParams map[string]
 	return strings.TrimSuffix(paramString, "&")
 }
 
-// The getBaseUrlString normalizes the URL
+// The getBaseUrlString normalizes the URL as per RFC 5849 Section 3.4.1.2
 func getBaseUrlString(u *url.URL) string {
 	scheme := strings.ToLower(u.Scheme)
-	host := strings.ToLower(u.Host)
-	if hostPort := strings.Split(host, ":"); len(hostPort) == 2 && (hostPort[1] == "80" || hostPort[1] == "443") {
-		host = hostPort[0]
+	hostname := strings.ToLower(u.Hostname())
+	port := u.Port()
+
+	var host string
+	if (scheme == "http" && port == "80") || (scheme == "https" && port == "443") || port == "" {
+		host = hostname
+		if strings.Contains(hostname, ":") && !strings.HasPrefix(hostname, "[") {
+			host = "[" + hostname + "]"
+		}
+	} else {
+		if strings.Contains(hostname, ":") && !strings.HasPrefix(hostname, "[") {
+			host = fmt.Sprintf("[%s]:%s", hostname, port)
+		} else {
+			host = fmt.Sprintf("%s:%s", hostname, port)
+		}
 	}
+
 	path := u.EscapedPath()
 	if path == "" || path[0] != '/' {
 		path = "/" + path

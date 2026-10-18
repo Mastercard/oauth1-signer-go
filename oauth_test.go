@@ -235,6 +235,34 @@ func TestGetBaseUrlString_ShouldRemoveRedundantPorts(t *testing.T) {
 	if "https://api.mastercard.com:17443/test" != baseUrl {
 		t.Errorf("Something went wrong got, %v", baseUrl)
 	}
+	// RFC 5849 section 3.4.1.2: port 443 on http is non-default, must be retained
+	URL, _ = url.Parse("http://api.mastercard.com:443/test")
+	baseUrl = getBaseUrlString(URL)
+	if "http://api.mastercard.com:443/test" != baseUrl {
+		t.Errorf("Expected port 443 retained on http, got %v", baseUrl)
+	}
+	// RFC 5849 section 3.4.1.2: port 80 on https is non-default, must be retained
+	URL, _ = url.Parse("https://api.mastercard.com:80/test")
+	baseUrl = getBaseUrlString(URL)
+	if "https://api.mastercard.com:80/test" != baseUrl {
+		t.Errorf("Expected port 80 retained on https, got %v", baseUrl)
+	}
+	// IPv6 host normalization
+	URL, _ = url.Parse("http://[::1]:80/test")
+	baseUrl = getBaseUrlString(URL)
+	if "http://[::1]/test" != baseUrl {
+		t.Errorf("Expected IPv6 default port 80 removed, got %v", baseUrl)
+	}
+	URL, _ = url.Parse("https://[::1]:443/test")
+	baseUrl = getBaseUrlString(URL)
+	if "https://[::1]/test" != baseUrl {
+		t.Errorf("Expected IPv6 default port 443 removed, got %v", baseUrl)
+	}
+	URL, _ = url.Parse("http://[::1]:8080/test")
+	baseUrl = getBaseUrlString(URL)
+	if "http://[::1]:8080/test" != baseUrl {
+		t.Errorf("Expected IPv6 non-default port 8080 retained, got %v", baseUrl)
+	}
 }
 
 func TestGetBaseUrlString_ShouldRemoveFragments(t *testing.T) {
@@ -353,5 +381,20 @@ func TestGetNonce_ShouldBeUniqueAndHaveLengthOf16(t *testing.T) {
 	nonce := getNonce()
 	if len(nonce) != nonceLength {
 		t.Errorf("Something went wrong got, %v", len(nonce))
+	}
+}
+
+func TestToOauthParamString_ShouldHandleEmptyKeyWithoutDuplication(t *testing.T) {
+	queryParams := map[string][]string{
+		"":  {"empty_val"},
+		"b": {"1"},
+	}
+	oauthParams := map[string]string{
+		"a": "2",
+	}
+	res := toOauthParamString(queryParams, oauthParams)
+	expected := "=empty_val&a=2&b=1"
+	if res != expected {
+		t.Errorf("Expected %q, got %q", expected, res)
 	}
 }

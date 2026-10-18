@@ -51,6 +51,9 @@ func getRequestBody(req *http.Request) ([]byte, error) {
 	}
 	defer req.Body.Close()
 	req.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+	req.GetBody = func() (io.ReadCloser, error) {
+		return io.NopCloser(bytes.NewReader(bodyBytes)), nil
+	}
 
 	return bodyBytes, nil
 }
