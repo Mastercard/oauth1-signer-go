@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	oauth "github.com/mastercard/oauth1-signer-go"
 	"github.com/mastercard/oauth1-signer-go/utils"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -80,3 +81,29 @@ func TestHttpRequestSigningWithInvalidInput(t *testing.T) {
 		t.Errorf("Expected the authorization header, got %v", authorizationVal)
 	}
 }
+
+func TestHttpRequestSigning_PopulatesGetBody(t *testing.T) {
+	signer := &oauth.Signer{
+		ConsumerKey: consumerKey,
+		SigningKey:  signingKey,
+	}
+	bodyContent := []byte(`{"test":"replayable"}`)
+	req, _ := http.NewRequest("POST", "https://sandbox.api.mastercard.com/service", bytes.NewReader(bodyContent))
+	err := signer.Sign(req)
+	if err != nil {
+		t.Fatalf("Sign failed: %v", err)
+	}
+	if req.GetBody == nil {
+		t.Fatalf("Expected req.GetBody to be populated")
+	}
+	r1, err := req.GetBody()
+	if err != nil {
+		t.Fatalf("req.GetBody() error: %v", err)
+	}
+	b1, _ := io.ReadAll(r1)
+	_ = r1.Close()
+	if !bytes.Equal(b1, bodyContent) {
+		t.Errorf("Expected GetBody to yield %q, got %q", string(bodyContent), string(b1))
+	}
+}
+
